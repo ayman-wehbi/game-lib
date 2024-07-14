@@ -6,7 +6,7 @@ const { searchGames } = require('./services/api'); // Import the searchGames fun
 const app = express();
 
 app.use(bodyParser.json());
-app.use(cors()); // Add CORS support for development purposes
+app.use(cors()); 
 
 // Route to search for games
 app.get('/api/search', async (req, res) => {
