@@ -1,12 +1,13 @@
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { searchGames } = require('./services/api'); // Import the searchGames function
+const { searchGames, getPopularGames } = require('./services/api'); // Import the getPopularGames function
 
 const app = express();
 
 app.use(bodyParser.json());
-app.use(cors()); 
+app.use(cors()); // Add CORS support for development purposes
 
 // Route to search for games
 app.get('/api/search', async (req, res) => {
@@ -23,7 +24,18 @@ app.get('/api/search', async (req, res) => {
   }
 });
 
-const port = process.env.PORT || 3000;
+// Route to get popular games
+app.get('/api/popular', async (req, res) => {
+  try {
+    const games = await getPopularGames();
+    res.json(games);
+  } catch (error) {
+    console.error('Error fetching popular games:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+const port = process.env.PORT || 3001; // Changed to 3001 to avoid conflicts with React dev server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });

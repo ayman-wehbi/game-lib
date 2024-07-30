@@ -1,31 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import GameItem from './GameItem';
-import { searchGames } from '../services/api';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import GameCard from './GameCard';
 import '../styles/GameList.css';
 
 const GameList = ({ searchTerm }) => {
   const [games, setGames] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (searchTerm) {
-      setLoading(true);
-      searchGames(searchTerm)
-        .then(data => setGames(data))
-        .catch(error => setError(error))
-        .finally(() => setLoading(false));
-    }
-  }, [searchTerm]);
+    const fetchGames = async () => {
+      if (searchTerm) {
+        try {
+          const response = await axios.get(`/api/search?query=${searchTerm}`);
+          setGames(response.data);
+        } catch (error) {
+          console.error('Error fetching search results:', error);
+        }
+      }
+    };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+    fetchGames();
+  }, [searchTerm]);
 
   return (
     <div className="game-list">
-      {games.map(game => (
-        <GameItem key={game.id} game={game} />
-      ))}
+      <div className="game-card-list">
+        {games.map((game) => (
+          <GameCard key={game.id} game={game} />
+        ))}
+      </div>
     </div>
   );
 };

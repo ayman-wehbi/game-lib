@@ -1,6 +1,12 @@
 .game-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-  }
-  
+  background-color: #181818; /* Dark gray/black */
+  color: #fff; /* White text */
+  width: 100%;
+  padding: 20px;
+}
+
+.game-card-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
